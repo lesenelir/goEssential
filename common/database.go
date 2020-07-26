@@ -3,21 +3,22 @@ package common
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	"github.com/spf13/viper"
 	"goEssential/model"
 )
 
 var DB *gorm.DB
 
-// 数据库初始函数
 func InitDB() *gorm.DB {
-	driverName := "mysql"
-	host := "localhost"
-	port := "3306"
-	database := "goEssential"
-	username := "root"
-	password := "19970122"
-	charset := "utf8"
-	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True",
+	fmt.Println(viper.GetString("datasource.driverName"))
+	driverName := viper.GetString("datasource.driverName")
+	host := viper.GetString("datasource.host")
+	port := viper.GetString("datasource.port")
+	database := viper.GetString("datasource.database")
+	username := viper.GetString("datasource.username")
+	password := viper.GetString("datasource.password")
+	charset := viper.GetString("datasource.charset")
+	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true",
 		username,
 		password,
 		host,
@@ -26,15 +27,12 @@ func InitDB() *gorm.DB {
 		charset)
 	db, err := gorm.Open(driverName, args)
 	if err != nil {
-		panic("failed to connect database, err: " + err.Error())
+		panic("fail to connect databse,err: " + err.Error())
 	}
-
-	// 自动创建数据表
 	db.AutoMigrate(&model.User{})
 	DB = db
 	return db
 }
-
 
 func GetDB() *gorm.DB {
 	return DB

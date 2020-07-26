@@ -1,0 +1,8 @@
+datasource:
+  driverName := "mysql"
+  host := "localhost"
+  port := "3306"
+  database := "goEssential"
+  username := "root"
+  password := "19970122"
+  charset := "utf8"
